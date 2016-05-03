@@ -2,17 +2,25 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = {
-  entry: './app/js/app.js',
-  output: { path: __dirname + '/app/', filename: 'app.min.js' },
+  context: __dirname + '/app',
+  entry: {
+    javascript: './app.js',
+    html: './index.html',
+  },
+  output: { path: __dirname + '/dist', filename: 'app/app.js' },
   module: {
     loaders: [
       {
-        test: /.jsx?$/,
+        test: /.js?$/,
         loader: 'babel-loader',
         exclude: /node_modules/,
         query: {
           presets: ['es2015', 'react']
         }
+      },
+      {
+        test: /\.html$/,
+        loader: "file?name=[name].[ext]",
       }
     ]
   },
