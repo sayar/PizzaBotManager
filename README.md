@@ -10,4 +10,4 @@ Sample app for the React MVA
 
 Make sure you have the Webpack dev server installed: 
 
-> npm install -g webpack-dev-server
+> npm install -g webpack webpack-dev-server
