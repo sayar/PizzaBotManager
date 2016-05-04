@@ -1,6 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var samples = require('./sample-data');
+
 var App = React.createClass({
   render : function() {
     return (
@@ -41,7 +43,7 @@ var ConversationSummary = React.createClass({
     return (
       <tr>
         <td>5PM</td>
-        <td>Rami Loves Pizza</td>
+        <td>Rami Sayar</td>
         <td>Order Sent</td>
       </tr>
     )
