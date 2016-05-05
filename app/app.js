@@ -7,11 +7,13 @@ var App = React.createClass({
   getInitialState: function() {
     return { 
       "humans": {},
-      "stores": {}
+      "stores": {},
+      "selectedConversation": []
     };
   },
   loadSampleData: function(){
     this.setState(samples);
+    this.setState({selectedConversation: samples.humans["Rami Sayar"].conversations});
   },
   render: function() {
     return (
@@ -22,7 +24,9 @@ var App = React.createClass({
           <div className="column">
             <Inbox humans={this.state.humans}/>
           </div>
-          <div className="column"></div>
+          <div className="column">
+            <Conversation conversation={this.state.selectedConversation} />
+          </div>
           <div className="column"></div>
         </div>
       </div>
@@ -55,9 +59,9 @@ var Inbox = React.createClass({
   }
 });
 
-var ConversationSummary = React.createClass({ 
+var ConversationSummary = React.createClass({
   sortByDate: function(a, b) {
-      return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
+  return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
   },
   messageSummary: function(conversations){
     var lastMessage = conversations.sort(this.sortByDate)[0];
@@ -70,6 +74,31 @@ var ConversationSummary = React.createClass({
         <td>{this.props.index}</td>
         <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
+    )
+  }
+});
+
+var Conversation = React.createClass({
+  renderMessage: function(val){
+    return <Message who={val.who} text={val.text} key={val.time.getTime()} />;
+  },
+  render: function() {
+    return (
+      <div id="conversation">
+        <h1>Conversation</h1>
+        <h3>Select a conversation from the inbox</h3>
+        <div id="messages">
+          {this.props.conversation.map(this.renderMessage)}
+        </div>
+      </div>
+    )
+  }
+});
+
+var Message = React.createClass({
+  render: function() {
+    return (
+      <p>{this.props.who} said: "{this.props.text}"</p>
     )
   }
 });
