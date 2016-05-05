@@ -4,10 +4,20 @@ var ReactDOM = require('react-dom');
 var samples = require('./sample-data');
 
 var App = React.createClass({
-  render : function() {
+  getInitialState: function() {
+    return { 
+      "Humans": {},
+      "Stores": {}
+    };
+  },
+  loadSampleData: function(){
+    this.setState(samples);
+  },
+  render: function() {
     return (
       <div>
         <div id="header"></div>
+        <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <div className="column">
             <Inbox />
@@ -26,12 +36,16 @@ var Inbox = React.createClass({
       <div id="inbox">
         <h1>Inbox</h1>
         <table>
-          <tr>
-            <th>Chat Received</th>
-            <th>Name</th>
-            <th>Status</th>
-          </tr>
-          <ConversationSummary />
+          <thead>
+            <tr>
+              <th>Chat Received</th>
+              <th>Name</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ConversationSummary />
+          </tbody>
         </table>
       </div>
     )
