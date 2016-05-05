@@ -1,5 +1,5 @@
 module.exports = {
-  "Humans": {
+  "humans": {
     "Rami Sayar" : {
       "conversations": [
         {

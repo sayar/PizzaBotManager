@@ -6,8 +6,8 @@ var samples = require('./sample-data');
 var App = React.createClass({
   getInitialState: function() {
     return { 
-      "Humans": {},
-      "Stores": {}
+      "humans": {},
+      "stores": {}
     };
   },
   loadSampleData: function(){
@@ -20,7 +20,7 @@ var App = React.createClass({
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <div className="column">
-            <Inbox />
+            <Inbox humans={this.state.humans}/>
           </div>
           <div className="column"></div>
           <div className="column"></div>
@@ -31,6 +31,9 @@ var App = React.createClass({
 });
 
 var Inbox = React.createClass({
+  renderConvoSum: function(human){
+    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} />;
+  },
   render : function() {
     return (
       <div id="inbox">
@@ -44,7 +47,7 @@ var Inbox = React.createClass({
             </tr>
           </thead>
           <tbody>
-            <ConversationSummary />
+            {Object.keys(this.props.humans).map(this.renderConvoSum)}
           </tbody>
         </table>
       </div>
@@ -52,13 +55,20 @@ var Inbox = React.createClass({
   }
 });
 
-var ConversationSummary = React.createClass({
+var ConversationSummary = React.createClass({ 
+  sortByDate: function(a, b) {
+      return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
+  },
+  messageSummary: function(conversations){
+    var lastMessage = conversations.sort(this.sortByDate)[0];
+    return lastMessage.who + ' said: "' + lastMessage.text + '" @ ' + lastMessage.time.toDateString();
+  },
   render: function(){
     return (
       <tr>
-        <td>5PM</td>
-        <td>Rami Sayar</td>
-        <td>Order Sent</td>
+        <td>{this.messageSummary(this.props.details.conversations)}</td>
+        <td>{this.props.index}</td>
+        <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
     )
   }
