@@ -15,6 +15,11 @@ var App = React.createClass({
     this.setState(samples);
     this.setState({selectedConversation: samples.humans["Rami Sayar"].conversations});
   },
+  setSelectedConversation: function(human_index){
+    this.setState({
+      selectedConversation: this.state.humans[human_index].conversations
+    })
+  },
   render: function() {
     return (
       <div>
@@ -22,7 +27,7 @@ var App = React.createClass({
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <div className="column">
-            <Inbox humans={this.state.humans}/>
+            <Inbox humans={this.state.humans} setSelectedConversation={this.setSelectedConversation} />
           </div>
           <div className="column">
             <Conversation conversation={this.state.selectedConversation} />
@@ -36,7 +41,7 @@ var App = React.createClass({
 
 var Inbox = React.createClass({
   renderConvoSum: function(human){
-    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} />;
+    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} setSelectedConversation={this.props.setSelectedConversation} />;
   },
   render : function() {
     return (
@@ -61,16 +66,19 @@ var Inbox = React.createClass({
 
 var ConversationSummary = React.createClass({
   sortByDate: function(a, b) {
-  return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
+    return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
   },
   messageSummary: function(conversations){
     var lastMessage = conversations.sort(this.sortByDate)[0];
     return lastMessage.who + ' said: "' + lastMessage.text + '" @ ' + lastMessage.time.toDateString();
   },
+  setSelected: function(){
+    this.props.setSelectedConversation(this.props.index);
+  },
   render: function(){
     return (
       <tr>
-        <td>{this.messageSummary(this.props.details.conversations)}</td>
+        <td><a onClick={this.setSelected}>{this.messageSummary(this.props.details.conversations)}</a></td>
         <td>{this.props.index}</td>
         <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
