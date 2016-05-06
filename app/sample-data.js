@@ -1,4 +1,35 @@
 module.exports = {
+  "stores": {
+    "Joe's Pizza on Bloor Ave": {
+      "orders": [
+        {
+          "human": "Rami Sayar",
+          "time": new Date(2016, 4, 5, 15, 11, 45, 0),
+          "pizzas": [{
+            "toppings": "Meat-Lovers",
+            "size": "S"
+          }],
+          "price": 15,
+          "address": "321 Sesame Street, Montreal, Canada",
+          "status": "In The Oven" // status := Open -> Confirmed -> In The Oven -> Delivered
+        },
+        {
+          "human": "Jeremy Foster",
+          "time": new Date(2016, 4, 4, 20, 31, 0, 0),
+          "pizzas": [{
+            "toppings": "cheese",
+            "size": "XL"
+          }],
+          "price": 15,
+          "address": "123 Sesame Street, Montreal, Canada",
+          "status": "Delivered" // status := Open -> Confirmed -> In The Oven -> Delivered
+        }
+      ]
+    },
+    "Joe's Pizza on University Ave": {
+      "orders": []
+    }
+  },
   "humans": {
     "Rami Sayar" : {
       "conversations": [
@@ -68,7 +99,7 @@ module.exports = {
           }],
           "price": 15,
           "address": "123 Sesame Street, Montreal, Canada",
-          "status": "Confirmed" // status := Open -> Confirmed -> In The Oven -> Delivered
+          "status": "Delivered" // status := Open -> Confirmed -> In The Oven -> Delivered
         }
       ]
     }
