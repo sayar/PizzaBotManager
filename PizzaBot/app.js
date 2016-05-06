@@ -20,11 +20,7 @@ dialog.on('OrderPizza', [
     function(session, args, next){
         // initialize empty array that will be passed on until end that holds conversations
         var conversations = [];
-        conversations.push();
-        conversations.push({text:"Hi, can I take your order?", time: new Date().toLocaleString()})
-        conversations.push(session.message.text);
-        conversations.push({text:session.message.text, time: new Date().toLocaleString()});
-        conversations.push({text:"Where would you like it delivered?", time: new Date().toLocaleString()});
+        conversations.push({who:"bot", text:"Hi, can I take your order?", time: new Date().toLocaleString()})
         // get the size
         var size = builder.EntityRecognizer.findEntity(args.entities, 'Size');
         // get the toppings
@@ -40,28 +36,38 @@ dialog.on('OrderPizza', [
         session.dialogData.pizzas = pizzas; 
         var orders = {};
         session.dialogData.orders = orders;
+        next();
+    },
+    function(session, results, next){
+        // save order request user made
+        session.dialogData.conversations.push({who:"human", text:session.message.text, time: new Date().toLocaleString()});
+        next();
+    },
+    function(session, results, next){
         // prompt user for address
+        session.dialogData.conversations.push({who:"bot", text:"Where would like it delivered", time: new Date().toLocaleString()});
         builder.Prompts.text(session, "Where would you like it delivered?");
-        
+        next();
     },
     function(session, results, next){
         // store the address
         session.dialogData.address = results.response;
-        session.dialogData.conversations.push({text: session.dialogData.address, time: new Date().toLocaleString()});
+        session.dialogData.conversations.push({who:"human", text: session.dialogData.address, time: new Date().toLocaleString()});
         next();
     },
     function(session, results, next){
        var time = new Date().toLocaleString();
        session.dialogData.pizzas.push({size:session.dialogData.size, toppings:session.dialogData.toppings});
        session.dialogData.orders.conversations = session.dialogData.conversations;
-       session.dialogData.orders.time = time;
        session.dialogData.orders.pizzas = session.dialogData.pizzas;
+       session.dialogData.orders.time = time;
        session.dialogData.orders.price = 15;
        session.dialogData.orders.address = session.dialogData.address;
        session.dialogData.orders.status = 'confirmed';
        next();
     },
     function(session, results, next){
+      // store data in parse server
       var options = {
         method: 'post',
         body: {'order': session.dialogData.orders}, 
@@ -77,7 +83,7 @@ dialog.on('OrderPizza', [
         return
         }
         console.log(' Body :', body);
-        session.endDialog('Thank you for your order');
+        session.endDialog('Thank you for your order!');
         });
     },
 ]);
