@@ -55,32 +55,49 @@ dialog.on('OrderPizza', [
        var time = new Date().toLocaleString();
        session.dialogData.pizzas.push({size:session.dialogData.size, toppings:session.dialogData.toppings});
        session.dialogData.orders.push({time: time, pizzas:JSON.stringify(session.dialogData.pizzas), price:15, address:session.dialogData.address, status:'confirmed'});
-       session.dalogData.orders.push({conversations: session.dialogData.coversations});
+       session.dialogData.orders.push({conversations: session.dialogData.conversations});
        next();
     },
-    function(session, results, next){
-      var options = {
-        method: 'post',
-        body: JSON.stringify({order: session.dialogData.orders}), 
-        json: true, 
-        url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
-        headers: {
-            'X-Parse-Application-Id': process.env.PARSE_ID,
-        }
-      }
-      request (options, function (err, res, body) {
-        if (err) {
-        console.log('Error :', err)
-        return
-        }
-      console.log(' Body :', body)
+    // function(session, results, next){
+    //   var options = {
+    //     method: 'post',
+    //     body: JSON.stringify({order: session.dialogData.orders}), 
+    //     json: true, 
+    //     url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
+    //     headers: {
+    //         'X-Parse-Application-Id': process.env.PARSE_ID,
+    //     }
+    //   }
+    //   request (options, function (err, res, body) {
+    //     if (err) {
+    //     console.log('Error :', err)
+    //     return
+    //     }
+    //   console.log(' Body :', body)
+    //      next();
 
-        });
-      next();
-    },
+    //     });
+    // },
     function(session, results){
-        console.log(session.dialogData.orders);
-        session.endDialog("Thank you! Your order has been placed");
+    //   var options = {
+    //     method: 'post',
+    //     body: JSON.stringify({order: session.dialogData.orders}), 
+    //     json: true, 
+    //     url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
+    //     headers: {
+    //         'X-Parse-Application-Id': process.env.PARSE_ID,
+    //     }
+    //   }
+    //   request (options, function (err, res, body) {
+    //     if (err) {
+    //     console.log('Error :', err)
+    //     return
+    //     }
+    //   console.log(' Body :', body)
+      session.endDialog("Thank you! Your order has been placed");
+
+    //     });
+
     }
 ]);
 
