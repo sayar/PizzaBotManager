@@ -1,6 +1,7 @@
 // Create bot and add dialogs
 var restify = require('restify');
 var builder = require('botbuilder');
+var request = require('request');
 
 var server = restify.createServer();
 var model = 'https://api.projectoxford.ai/luis/v1/application?id=05e77449-7d73-446b-99a2-d3bf101ef87d&subscription-key='+ process.env.LUIS_KEY
@@ -54,13 +55,32 @@ dialog.on('OrderPizza', [
        var time = new Date().toLocaleString();
        session.dialogData.pizzas.push({size:session.dialogData.size, toppings:session.dialogData.toppings});
        session.dialogData.orders.push({time: time, pizzas:JSON.stringify(session.dialogData.pizzas), price:15, address:session.dialogData.address, status:'confirmed'});
+       session.dalogData.orders.push({conversations: session.dialogData.coversations});
        next();
     },
-    
+    function(session, results, next){
+      var options = {
+        method: 'post',
+        body: JSON.stringify({order: session.dialogData.orders}), 
+        json: true, 
+        url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
+        headers: {
+            'X-Parse-Application-Id': process.env.PARSE_ID,
+        }
+      }
+      request (options, function (err, res, body) {
+        if (err) {
+        console.log('Error :', err)
+        return
+        }
+      console.log(' Body :', body)
+
+        });
+      next();
+    },
     function(session, results){
-        console.log(session.dialogData.conversations);
+        console.log(session.dialogData.orders);
         session.endDialog("Thank you! Your order has been placed");
-        // TODO: 7 HTTP post request to rest server that can be queried by react side 
     }
 ]);
 
