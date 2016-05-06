@@ -92,6 +92,6 @@ dialog.on('OrderPizza', [
 server.use(bot.verifyBotFramework({ appId: process.env.APP_ID, appSecret: process.env.APP_SECRET }));
 server.post('/api/messages', bot.listen());
 
-server.listen(8080, function () {
+server.listen(8080||process.env.PORT, function () {
     console.log('%s listening to %s', server.name, server.url); 
 });
