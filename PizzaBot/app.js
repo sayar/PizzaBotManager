@@ -11,8 +11,7 @@ bot.add('/', dialog);
 
 dialog.on('Greeting', [
     function(session, args, next){
-        // prompt user to order pizza  
-        //console.log(session.message.text)     
+        // prompt user to order pizza    
         session.send("Hi, can I take your order?");
     },
 ])
@@ -39,7 +38,7 @@ dialog.on('OrderPizza', [
         // store the pizza order
         var pizzas = [];
         session.dialogData.pizzas = pizzas; 
-        var orders = [];
+        var orders = {};
         session.dialogData.orders = orders;
         // prompt user for address
         builder.Prompts.text(session, "Where would you like it delivered?");
@@ -54,54 +53,34 @@ dialog.on('OrderPizza', [
     function(session, results, next){
        var time = new Date().toLocaleString();
        session.dialogData.pizzas.push({size:session.dialogData.size, toppings:session.dialogData.toppings});
-       session.dialogData.orders.push({time: time, pizzas:JSON.stringify(session.dialogData.pizzas), price:15, address:session.dialogData.address, status:'confirmed'});
-       session.dialogData.orders.push({conversations: session.dialogData.conversations});
+       session.dialogData.orders.conversations = session.dialogData.conversations;
+       session.dialogData.orders.time = time;
+       session.dialogData.orders.pizzas = session.dialogData.pizzas;
+       session.dialogData.orders.price = 15;
+       session.dialogData.orders.address = session.dialogData.address;
+       session.dialogData.orders.status = 'confirmed';
        next();
     },
-    // function(session, results, next){
-    //   var options = {
-    //     method: 'post',
-    //     body: JSON.stringify({order: session.dialogData.orders}), 
-    //     json: true, 
-    //     url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
-    //     headers: {
-    //         'X-Parse-Application-Id': process.env.PARSE_ID,
-    //     }
-    //   }
-    //   request (options, function (err, res, body) {
-    //     if (err) {
-    //     console.log('Error :', err)
-    //     return
-    //     }
-    //   console.log(' Body :', body)
-    //      next();
-
-    //     });
-    // },
-    function(session, results){
-    //   var options = {
-    //     method: 'post',
-    //     body: JSON.stringify({order: session.dialogData.orders}), 
-    //     json: true, 
-    //     url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
-    //     headers: {
-    //         'X-Parse-Application-Id': process.env.PARSE_ID,
-    //     }
-    //   }
-    //   request (options, function (err, res, body) {
-    //     if (err) {
-    //     console.log('Error :', err)
-    //     return
-    //     }
-    //   console.log(' Body :', body)
-      session.endDialog("Thank you! Your order has been placed");
-
-    //     });
-
-    }
+    function(session, results, next){
+      var options = {
+        method: 'post',
+        body: {'order': session.dialogData.orders}, 
+        json: true, 
+        url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
+        headers: {
+            'X-Parse-Application-Id': process.env.PARSE_ID,
+        }
+      }
+      request (options, function (err, res, body) {
+        if (err) {
+        console.log('Error :', err)
+        return
+        }
+        console.log(' Body :', body);
+        session.endDialog('Thank you for your order');
+        });
+    },
 ]);
-
-
 
 
 server.use(bot.verifyBotFramework({ appId: process.env.APP_ID, appSecret: process.env.APP_SECRET }));
