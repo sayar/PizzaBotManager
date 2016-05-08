@@ -1,5 +1,11 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
+var ReactRouter = require('react-router');
+
+var browserHistory = ReactRouter.browserHistory;
+var Route = ReactRouter.Route;
+var Router = ReactRouter.Router;
+var Link = ReactRouter.Link;
 
 var samples = require('./sample-data');
 
@@ -15,6 +21,11 @@ var App = React.createClass({
     this.setState(samples);
     this.setState({selectedConversation: samples.humans["Rami Sayar"].conversations});
   },
+  componentDidMount: function() {
+    if(this.props.params.human !== undefined && this.props.params.humans !== null) {
+      this.setSelectedConversation(decodeURIComponent(this.props.params.human));
+    }
+  },
   setSelectedConversation: function(human_index){
     this.setState({
       selectedConversation: this.state.humans[human_index].conversations
@@ -27,7 +38,7 @@ var App = React.createClass({
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <div className="column">
-            <Inbox humans={this.state.humans} setSelectedConversation={this.setSelectedConversation} />
+            <Inbox humans={this.state.humans} />
           </div>
           <div className="column">
             <Conversation conversation={this.state.selectedConversation} />
@@ -43,7 +54,7 @@ var App = React.createClass({
 
 var Inbox = React.createClass({
   renderConvoSum: function(human){
-    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} setSelectedConversation={this.props.setSelectedConversation} />;
+    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} />;
   },
   render : function() {
     return (
@@ -74,13 +85,10 @@ var ConversationSummary = React.createClass({
     var lastMessage = conversations.sort(this.sortByDate)[0];
     return lastMessage.who + ' said: "' + lastMessage.text + '" @ ' + lastMessage.time.toDateString();
   },
-  setSelected: function(){
-    this.props.setSelectedConversation(this.props.index);
-  },
   render: function(){
     return (
       <tr>
-        <td><a onClick={this.setSelected}>{this.messageSummary(this.props.details.conversations)}</a></td>
+        <td><Link to={'' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
         <td>{this.props.index}</td>
         <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
@@ -145,4 +153,10 @@ var Store = React.createClass({
   }
 });
 
-ReactDOM.render(<App/>, document.querySelector('#main'));
+ReactDOM.render((
+  <Router history={browserHistory}>
+    <Route path="/" component={App}>
+      <Route path=":human" component={App}></Route>
+    </Route>
+  </Router>
+), document.querySelector('#main'))
