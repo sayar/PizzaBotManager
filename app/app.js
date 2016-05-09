@@ -1,6 +1,7 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactRouter = require('react-router');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var browserHistory = ReactRouter.browserHistory;
 var Route = ReactRouter.Route;
@@ -72,6 +73,8 @@ var Inbox = React.createClass({
 });
 
 var ConversationSummary = React.createClass({
+  mixins: [PureRenderMixin],
+
   sortByDate: function(a, b) {
     return a.time>b.time ? -1 : a.time<b.time ? 1 : 0;
   },
@@ -119,6 +122,8 @@ var Conversation = React.createClass({
 });
 
 var Message = React.createClass({
+  mixins: [PureRenderMixin],
+
   render: function() {
     return (
       <p>{this.props.who} said: "{this.props.text}"</p>
@@ -143,6 +148,8 @@ var StoreList = React.createClass({
 });
 
 var Store = React.createClass({
+  mixins: [PureRenderMixin],
+
   getCount: function(status){
     return this.props.details.orders.filter(function(n){ return n.status === status}).length;
   },
