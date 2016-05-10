@@ -49,18 +49,7 @@ var InboxPane = React.createClass({
     return (
       <div id="inbox-pane" className="column">
         <h1>Inbox</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Chat Received</th>
-              <th>Name</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(this.props.humans).map(this.renderConvoSum)}
-          </tbody>
-        </table>
+        {Object.keys(this.props.humans).map(this.renderConvoSum)}
       </div>
     )
   }
@@ -78,11 +67,9 @@ var InboxItem = React.createClass({
   },
   render: function(){
     return (
-      <tr className="inbox-item">
-        <td className="conversation"><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
-        <td className="name">{this.props.index}</td>
-        <td className="status">{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
-      </tr>
+      <div className="inbox-item">
+        <Link to={'/conversation/' + encodeURIComponent(this.props.index)}>Conversation with {this.props.index}</Link> ({this.props.details.orders.sort(this.sortByDate)[0].status})
+      </div>
     )
   }
 });
