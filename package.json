@@ -5,7 +5,6 @@
   "main": "./PizzaBot/server.js",
   "private": true,
   "scripts": {
-    "postinstall": "node ./node_modules/webpack/bin/webpack",
     "start-webpack-server": "webpack-dev-server --hot --inline --colors --progress",
     "start": "node ./PizzaBot/server.js"
   },
