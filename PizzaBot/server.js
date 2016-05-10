@@ -1,9 +1,5 @@
-// Create bot and add dialogs
-var restify = require('restify');
 var builder = require('botbuilder');
-var request = require('request');
 
-var server = restify.createServer();
 var model = 'https://api.projectoxford.ai/luis/v1/application?id=' + process.env.LUIS_ID + '&subscription-key=' + process.env.LUIS_KEY
 var dialog = new builder.LuisDialog(model);
 var bot = new builder.BotConnectorBot({ appId: process.env.APP_ID, appSecret: process.env.APP_SECRET });
@@ -83,26 +79,18 @@ dialog.on('OrderPizza', [
     }
 ]);
 
+var express = require('express');
+var path = require('path');
+var app = express();
 
-// Serve a static web page
-server.get('/index', restify.serveStatic({
-	'directory': '.',
-	'default': 'index.html'
-}));
-
-// Store pizza orders into memory
-server.use(restify.acceptParser(server.acceptable));
-server.use(restify.queryParser());
-server.use(restify.bodyParser());
-
-server.get('/pizzaorders', function (req, res, next) {
-   res.send({'orders': pizzaOrders});
-   return next();
+app.get('/pizzaorders', function (req, res) {
+   return res.json({'orders': pizzaOrders});
 });
 
 // Handle Bot Framework messages
-server.post('/api/messages', bot.verifyBotFramework(), bot.listen());
+app.post('/api/messages', bot.verifyBotFramework(), bot.listen());
 
-server.listen(process.env.PORT || 8080, function () {
-    console.log('%s listening to %s', server.name, server.url); 
-});
+app.use('/chat', express.static(path.join(__dirname, '')));
+app.use('/', express.static(path.join(__dirname, '../dist')));
+
+app.listen(process.env.PORT || 8080);
