@@ -1,6 +1,6 @@
 body {
   font-family:'Segoe UI', Helvetica, sans-serif;
-  background-color:goldenrod;
+  background-color:#666c60;
 }
 .container {
   display: flex;
@@ -12,12 +12,50 @@ body {
   padding:10px 15px;
 }
 
-.column > div > h1 {
+.column > h1 {
   font-family:'Segoe UI Light';
   margin-top:0px;
 }
 
 /* INBOX */
+#inbox {
+  background-color:#6aa0a6;
+}
+
 #inbox > table {
   text-align:left;  
+}
+
+/* CONVERSATION SUMMARY */
+.conversation-summary > conversation {
+
+}
+
+/* CONVERSATION */
+#conversation {
+  background-color:#9aa641;
+}
+
+/* MESSAGE */
+
+/* STORE LIST */
+#stores {
+  background-color:#c4925d;
+}
+
+#stores > ul {
+  padding-left:0px;
+  list-style: none;
+}
+
+/* STORE */
+.store {
+  background-color:#f2dfa7;
+  padding:1px 15px;
+  margin-bottom: 10px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+}
+
+.store > .name {
+  font-weight:bold;
 }

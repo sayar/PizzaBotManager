@@ -15,7 +15,7 @@ var App = React.createClass({
     return { 
       "humans": {},
       "stores": {}
-    };
+     };
   },
   loadSampleData: function(){
     this.setState(samples);
@@ -32,15 +32,9 @@ var App = React.createClass({
         <div id="header"></div>
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
-          <div className="column">
-            <Inbox humans={this.state.humans} />
-          </div>
-          <div className="column">
-            {this.props.children || "Select a Conversation from the Inbox"}
-          </div>
-          <div className="column">
-            <StoreList stores={this.state.stores} />
-          </div>
+          <Inbox humans={this.state.humans} />
+          {this.props.children || "Select a Conversation from the Inbox"}
+          <StoreList stores={this.state.stores} />
         </div>
       </div>
     )
@@ -53,7 +47,7 @@ var Inbox = React.createClass({
   },
   render : function() {
     return (
-      <div id="inbox">
+      <div id="inbox" className="column">
         <h1>Inbox</h1>
         <table>
           <thead>
@@ -84,10 +78,10 @@ var ConversationSummary = React.createClass({
   },
   render: function(){
     return (
-      <tr>
-        <td><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
-        <td>{this.props.index}</td>
-        <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
+      <tr className="conversation-summary">
+        <td className="conversation"><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
+        <td className="name">{this.props.index}</td>
+        <td className="status">{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
     )
   }
@@ -110,7 +104,7 @@ var Conversation = React.createClass({
   },
   render: function() {
     return (
-      <div id="conversation">
+      <div id="conversation" className="column">
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
@@ -137,7 +131,7 @@ var StoreList = React.createClass({
   },
   render: function() {
     return (
-      <div id="stores">
+      <div id="stores" className="column">
         <h1>Stores & Ovens</h1>
         <ul>
           {Object.keys(this.props.stores).map(this.renderStore)}
@@ -155,8 +149,8 @@ var Store = React.createClass({
   },
   render: function(){
     return (
-      <li>
-        <p>{this.props.index}</p>
+      <li className="store">
+        <p className="name">{this.props.index}</p>
         <p>Orders Confirmed: {this.getCount("Confirmed")}</p>
         <p>Orders In The Oven: {this.getCount("In The Oven")}</p>
         <p>Orders Delivered: {this.getCount("Delivered")}</p>
