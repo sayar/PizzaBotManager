@@ -10,6 +10,8 @@ var Link = ReactRouter.Link;
 
 var samples = require('./sample-data');
 
+require("./app.css");
+
 var App = React.createClass({
   getInitialState: function() {
     return { 
@@ -112,7 +114,7 @@ var Message = React.createClass({
 
   render: function() {
     return (
-      <p className={this.props.who}><img src={'/app/assets/' + this.props.who + '.png'} /> "{this.props.text}"</p>
+      <p className={this.props.who}><img src={require('./assets/' + this.props.who + '.png')} /> "{this.props.text}"</p>
     )
   }
 });
@@ -144,9 +146,9 @@ var Store = React.createClass({
       <div className="store">
         <div className="name">{this.props.index}</div>
         <div className="orders">
-          <div><img src="/app/assets/order-confirmed.png"/> {this.getCount("Confirmed")}</div>
-          <div><img src="/app/assets/order-oven.png"/> {this.getCount("In The Oven")}</div>
-          <div><img src="/app/assets/order-delivered.png"/> {this.getCount("Delivered")}</div>
+          <div><img src={require('./assets/order-confirmed.png')}/> {this.getCount("Confirmed")}</div>
+          <div><img src={require('./assets/order-oven.png')}/> {this.getCount("In The Oven")}</div>
+          <div><img src={require('./assets/order-delivered.png')}/> {this.getCount("Delivered")}</div>
         </div>
       </div>
     )
