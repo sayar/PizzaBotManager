@@ -1,7 +1,6 @@
 import React from 'react';
-import Conversation from './Conversation';
-import Inbox from './Inbox';
-import StoreList from './StoreList';
+import InboxPane from './InboxPane';
+import StorePane from './StorePane';
 import autoBind from 'react-autobind';
 import samples from '../sample-data';
 
@@ -33,15 +32,9 @@ class App extends React.Component {
         <div id="header"></div>
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
-          <div className="column">
-            <Inbox humans={this.state.humans} />
-          </div>
-          <div className="column">
-            {this.props.children || "Select a Conversation from the Inbox"}
-          </div>
-          <div className="column">
-            <StoreList stores={this.state.stores} />
-          </div>
+          <InboxPane humans={this.state.humans} />
+          {this.props.children || "Select a Conversation from the Inbox"}
+          <StorePane stores={this.state.stores} />
         </div>
       </div>
     )

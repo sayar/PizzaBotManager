@@ -16,8 +16,8 @@ class Store extends React.Component {
   
   render() {
     return (
-      <li>
-        <p>{this.props.index}</p>
+      <li className="store">
+        <p className="name">{this.props.index}</p>
         <p>Orders Confirmed: {this.getCount("Confirmed")}</p>
         <p>Orders In The Oven: {this.getCount("In The Oven")}</p>
         <p>Orders Delivered: {this.getCount("Delivered")}</p>

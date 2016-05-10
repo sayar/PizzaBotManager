@@ -3,7 +3,7 @@ import { Link } from 'react-router';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
 import autoBind from 'react-autobind';
 
-class ConversationSummary extends React.Component {
+class InboxItem extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -22,13 +22,13 @@ class ConversationSummary extends React.Component {
   
   render() {
     return (
-      <tr>
-        <td><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
-        <td>{this.props.index}</td>
-        <td>{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
+      <tr className="inbox-item">
+        <td className="conversation"><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
+        <td className="name">{this.props.index}</td>
+        <td className="status">{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
       </tr>
     )
   }
 };
 
-export default ConversationSummary;
+export default InboxItem;

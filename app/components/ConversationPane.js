@@ -3,7 +3,7 @@ import Message from './Message';
 import autoBind from 'react-autobind';
 import samples from '../sample-data';
 
-class Conversation extends React.Component {
+class ConversationPane extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -25,7 +25,7 @@ class Conversation extends React.Component {
   }
   render() {
     return (
-      <div id="conversation">
+      <div id="conversation-pane" className="column">
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
@@ -36,4 +36,4 @@ class Conversation extends React.Component {
   }
 };
 
-export default Conversation;
+export default ConversationPane;

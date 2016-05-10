@@ -2,7 +2,7 @@ import React from 'react';
 import Store from './Store';
 import autoBind from 'react-autobind';
 
-class StoreList extends React.Component {
+class StorePane extends React.Component {
   constructor(props) {
     super(props);
     autoBind(this);
@@ -14,7 +14,7 @@ class StoreList extends React.Component {
   
   render() {
     return (
-      <div id="stores">
+      <div id="stores-pane" className="column">
         <h1>Stores & Ovens</h1>
         <ul>
           {Object.keys(this.props.stores).map(this.renderStore)}
@@ -24,4 +24,4 @@ class StoreList extends React.Component {
   }
 };
 
-export default StoreList;
+export default StorePane;
