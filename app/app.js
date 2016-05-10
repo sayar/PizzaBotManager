@@ -99,6 +99,11 @@ var ConversationPane = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     this.loadSampleData(nextProps.params.human);
   },
+
+  sortByDateDesc: function(a, b) {
+    return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+  },
+
   renderMessage: function(val){
     return <Message who={val.who} text={val.text} key={val.time.getTime()} />;
   },
@@ -108,7 +113,7 @@ var ConversationPane = React.createClass({
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
-         {this.state.conversation.reverse().map(this.renderMessage)}
+         {this.state.conversation.sort(this.sortByDateDesc).map(this.renderMessage)}
         </div>
       </div>
     )
