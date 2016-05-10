@@ -108,7 +108,7 @@ var ConversationPane = React.createClass({
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
-         {this.state.conversation.map(this.renderMessage)}
+         {this.state.conversation.reverse().map(this.renderMessage)}
         </div>
       </div>
     )
