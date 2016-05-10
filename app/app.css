@@ -31,26 +31,21 @@ body {
 }
 
 #inbox-pane > div {
-  background-color: rgba(255,255,255,0.2);
+  background-color: rgba(255,255,255,0.5);
   list-style: none;
   padding:10px 20px;
   margin:5px;
-  border-radius: 30px;
 }
 
-/* INBOX ITEMS */
-.inbox-item > conversation {
-
-}
 
 /* CONVERSATION PANE */
 #conversation-pane {
   background-color:#9aa641;
 }
 
-/* MESSAGE */
 #conversation-pane #messages p {
   padding:5px;
+  vertical-align: middle;
 }
 
 #conversation-pane #messages p.bot {
@@ -61,7 +56,6 @@ body {
 #conversation-pane #messages p.human {
   margin-left:50px;
   background-color:rgba(255,255,255,0.2);  
-  
 }
 
 /* STORES PANE */
@@ -74,14 +68,29 @@ body {
   list-style: none;
 }
 
-/* STORE */
-.store {
+#stores-pane .store {
   background-color:#f2dfa7;
-  padding:1px 15px;
   margin-bottom: 10px;
   box-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+  display:flex;
 }
+
 
 .store > .name {
   font-weight:bold;
+  flex:1;
+  padding:6px;
+}
+
+#stores-pane .store .orders {
+  display:flex;
+  font-weight:bold;
+  font-size:20pt;
+  vertical-align: middle;
+}
+
+#stores-pane .store .orders > div {
+  padding-right:8px;
+  display:flex;
+  align-items: center;
 }
