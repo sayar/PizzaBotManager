@@ -120,7 +120,7 @@ var Message = React.createClass({
 
   render: function() {
     return (
-      <p>{this.props.who} said: "{this.props.text}"</p>
+      <p className={this.props.who}>{this.props.who} said: "{this.props.text}"</p>
     )
   }
 });
