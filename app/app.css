@@ -25,33 +25,33 @@ body {
   margin-top:0px;
 }
 
-/* INBOX */
-#inbox {
+/* INBOX PANE */
+#inbox-pane {
   background-color:#6aa0a6;
 }
 
-#inbox > table {
+#inbox-pane > table {
   text-align:left;  
 }
 
 /* CONVERSATION SUMMARY */
-.conversation-summary > conversation {
+.inbox-item > conversation {
 
 }
 
-/* CONVERSATION */
-#conversation {
+/* CONVERSATION PANE */
+#conversation-pane {
   background-color:#9aa641;
 }
 
 /* MESSAGE */
 
-/* STORE LIST */
-#stores {
+/* STORES PANE */
+#stores-pane {
   background-color:#c4925d;
 }
 
-#stores > ul {
+#stores-pane > ul {
   padding-left:0px;
   list-style: none;
 }

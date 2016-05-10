@@ -32,22 +32,22 @@ var App = React.createClass({
         <div id="header"></div>
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
-          <Inbox humans={this.state.humans} />
+          <InboxPane humans={this.state.humans} />
           {this.props.children || "Select a Conversation from the Inbox"}
-          <StoreList stores={this.state.stores} />
+          <StorePane stores={this.state.stores} />
         </div>
       </div>
     )
   }
 });
 
-var Inbox = React.createClass({
+var InboxPane = React.createClass({
   renderConvoSum: function(human){
-    return <ConversationSummary key={human} index={human} details={this.props.humans[human]} />;
+    return <InboxItem key={human} index={human} details={this.props.humans[human]} />;
   },
   render : function() {
     return (
-      <div id="inbox" className="column">
+      <div id="inbox-pane" className="column">
         <h1>Inbox</h1>
         <table>
           <thead>
@@ -66,7 +66,7 @@ var Inbox = React.createClass({
   }
 });
 
-var ConversationSummary = React.createClass({
+var InboxItem = React.createClass({
   mixins: [PureRenderMixin],
 
   sortByDate: function(a, b) {
@@ -78,7 +78,7 @@ var ConversationSummary = React.createClass({
   },
   render: function(){
     return (
-      <tr className="conversation-summary">
+      <tr className="inbox-item">
         <td className="conversation"><Link to={'/conversation/' + encodeURIComponent(this.props.index)}>{this.messageSummary(this.props.details.conversations)}</Link></td>
         <td className="name">{this.props.index}</td>
         <td className="status">{this.props.details.orders.sort(this.sortByDate)[0].status}</td>
@@ -87,7 +87,7 @@ var ConversationSummary = React.createClass({
   }
 });
 
-var Conversation = React.createClass({
+var ConversationPane = React.createClass({
   loadSampleData: function(human){
     this.setState({conversation: samples.humans[human].conversations});
   },
@@ -104,7 +104,7 @@ var Conversation = React.createClass({
   },
   render: function() {
     return (
-      <div id="conversation" className="column">
+      <div id="conversation-pane" className="column">
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
@@ -125,13 +125,13 @@ var Message = React.createClass({
   }
 });
 
-var StoreList = React.createClass({
+var StorePane = React.createClass({
   renderStore: function(store){
     return <Store key={store} index={store} details={this.props.stores[store]} />;
   },
   render: function() {
     return (
-      <div id="stores" className="column">
+      <div id="stores-pane" className="column">
         <h1>Stores & Ovens</h1>
         <ul>
           {Object.keys(this.props.stores).map(this.renderStore)}
@@ -162,7 +162,7 @@ var Store = React.createClass({
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-      <Route path="/conversation/:human" component={Conversation}></Route>
+      <Route path="/conversation/:human" component={ConversationPane}></Route>
     </Route>
   </Router>
 ), document.querySelector('#main'))
