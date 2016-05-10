@@ -9,6 +9,9 @@ var dialog = new builder.LuisDialog(model);
 var bot = new builder.BotConnectorBot({ appId: process.env.APP_ID, appSecret: process.env.APP_SECRET });
 bot.add('/', dialog);
 
+// initalize array to store pizza orders
+var pizzaOrders = [];
+
 // Triggered by saying 'hi'
 dialog.on('Greeting', [
     function (session, args, next) {
@@ -22,7 +25,7 @@ dialog.on('OrderPizza', [
     function (session, args, next) {
         // initialize empty array that will be passed on until end that holds conversations
         var conversations = [];
-        conversations.push({ who: "bot", text: "Hi, can I take your order?", time: new Date().toLocaleString() })
+        conversations.push({ who: "bot", text: "Hi, can I take your order?", time: new Date().toLocaleString() });
         // get the size
         var size = builder.EntityRecognizer.findEntity(args.entities, 'Size');
         // get the toppings
@@ -33,11 +36,10 @@ dialog.on('OrderPizza', [
         session.dialogData.size = size.entity;
         // store toppings
         session.dialogData.toppings = toppings.map(function (topping) { return topping.entity });
-        // store pizza order
         var pizzas = [];
         session.dialogData.pizzas = pizzas;
-        var orders = {};
-        session.dialogData.orders = orders;
+        var order = {};
+        session.dialogData.order = order;
         next();
     },
     function (session, results, next) {
@@ -59,43 +61,44 @@ dialog.on('OrderPizza', [
     },
     function (session, results, next) {
         var time = new Date().toLocaleString();
+        // store pizza information
         session.dialogData.pizzas.push({ size: session.dialogData.size, toppings: session.dialogData.toppings });
-        session.dialogData.orders.conversations = session.dialogData.conversations;
-        session.dialogData.orders.pizzas = session.dialogData.pizzas;
-        session.dialogData.orders.time = time;
-        session.dialogData.orders.price = 15;
-        session.dialogData.orders.address = session.dialogData.address;
-        session.dialogData.orders.status = 'confirmed';
+        // store conversation 
+        session.dialogData.order.conversations = session.dialogData.conversations;
+        session.dialogData.order.pizzas = session.dialogData.pizzas;
+        // store time
+        session.dialogData.order.time = time;
+        // total price 
+        session.dialogData.order.price = 15;
+        // store address
+        session.dialogData.order.address = session.dialogData.address;
+        // store status
+        session.dialogData.order.status = 'confirmed';
+        // add pizza order to array of orders
+        pizzaOrders.push(session.dialogData.order);
         next();
-    },
-    function (session, results, next) {
-        // store data in parse server
-        var options = {
-            method: 'post',
-            body: { 'order': session.dialogData.orders }, 
-            json: true, 
-            url: 'https://pizzaordersdb.azurewebsites.net/parse/classes/PizzaOrders',
-            headers: {
-                'X-Parse-Application-Id': process.env.PARSE_ID,
-            }
-        }
-        request(options, function (err, res, body) {
-            if (err) {
-                console.log('Error :', err)
-                return
-            }
-            console.log(' Body :', body);
-            session.endDialog('Thank you for your order!');
-        });
-    },
+    },    
+    function(session, results){
+        session.endDialog('Thank you for your order!');
+    }
 ]);
 
 
 // Serve a static web page
-server.get(/.*/, restify.serveStatic({
+server.get('/index', restify.serveStatic({
 	'directory': '.',
 	'default': 'index.html'
 }));
+
+// Store pizza orders into memory
+server.use(restify.acceptParser(server.acceptable));
+server.use(restify.queryParser());
+server.use(restify.bodyParser());
+
+server.get('/pizzaorders', function (req, res, next) {
+   res.send({'orders': pizzaOrders});
+   return next();
+});
 
 // Handle Bot Framework messages
 server.post('/api/messages', bot.verifyBotFramework(), bot.listen());
