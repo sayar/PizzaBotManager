@@ -2,13 +2,14 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactRouter = require('react-router');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
+var $ = require('jquery');
 
 var browserHistory = ReactRouter.browserHistory;
 var Route = ReactRouter.Route;
 var Router = ReactRouter.Router;
 var Link = ReactRouter.Link;
 
-var samples = require('./sample-data');
+var db = require('./sample-data');
 
 require("./app.css");
 
@@ -20,7 +21,18 @@ var App = React.createClass({
      };
   },
   loadSampleData: function(){
-    this.setState(samples);
+    this.setState(db);
+  },
+  fetchData: function(){
+    $.get('/api/humans', function (result) {
+      for (var key in result) {
+        for(var conv in result[key].conversations){
+          result[key].conversations[conv].time = new Date(result[key].conversations[conv].time)
+        }
+      }
+      this.setState({'humans': result});
+      db = this.state;
+    }.bind(this));
   },
   // Handle when user navigates to a conversation directly without first loading the index...
   componentWillMount: function(){
@@ -33,6 +45,7 @@ var App = React.createClass({
       <div>
         <div id="header"></div>
         <button onClick={this.loadSampleData}>Load Sample Data</button>
+        <button onClick={this.fetchData}>Fetch Data</button>
         <div className="container">
           <InboxPane humans={this.state.humans} />
           {this.props.children || <div id="conversation-pane" className="column"><h4>Select a Conversation from the Inbox</h4></div>}
@@ -77,16 +90,16 @@ var InboxItem = React.createClass({
 });
 
 var ConversationPane = React.createClass({
-  loadSampleData: function(human){
-    this.setState({conversation: samples.humans[human].conversations});
+  loadData: function(human){
+    this.setState({conversation: db.humans[human].conversations});
   },
   // Handle when User navigates from / to /conversation/:human
   componentWillMount: function() {
-    this.loadSampleData(this.props.params.human);
+    this.loadData(this.props.params.human);
   },
   // Handle when User navigates between conversations
   componentWillReceiveProps: function(nextProps) {
-    this.loadSampleData(nextProps.params.human);
+    this.loadData(nextProps.params.human);
   },
 
   sortByDateDesc: function(a, b) {
@@ -94,7 +107,7 @@ var ConversationPane = React.createClass({
   },
 
   renderMessage: function(val){
-    return <Message who={val.who} text={val.text} key={val.time.getTime()} />;
+    return <Message who={val.who} text={val.text} key={val.text+val.time.getTime()} />;
   },
   render: function() {
     return (
