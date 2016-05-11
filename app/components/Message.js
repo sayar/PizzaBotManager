@@ -11,7 +11,7 @@ class Message extends React.Component {
   }
   render() {
     return (
-      <p>{this.props.who} said: "{this.props.text}"</p>
+      <p className={this.props.who}><img src={'/app/assets/' + this.props.who + '.png'} /> "{this.props.text}"</p>
     )
   }
 };

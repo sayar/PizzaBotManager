@@ -16,12 +16,14 @@ class Store extends React.Component {
   
   render() {
     return (
-      <li className="store">
-        <p className="name">{this.props.index}</p>
-        <p>Orders Confirmed: {this.getCount("Confirmed")}</p>
-        <p>Orders In The Oven: {this.getCount("In The Oven")}</p>
-        <p>Orders Delivered: {this.getCount("Delivered")}</p>
-      </li>
+      <div className="store">
+        <div className="name">{this.props.index}</div>
+        <div className="orders">
+          <div><img src="/app/assets/order-confirmed.png"/> {this.getCount("Confirmed")}</div>
+          <div><img src="/app/assets/order-oven.png"/> {this.getCount("In The Oven")}</div>
+          <div><img src="/app/assets/order-delivered.png"/> {this.getCount("Delivered")}</div>
+        </div>
+      </div>
     )
   }
 };

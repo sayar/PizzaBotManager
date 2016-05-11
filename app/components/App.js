@@ -33,7 +33,7 @@ class App extends React.Component {
         <button onClick={this.loadSampleData}>Load Sample Data</button>
         <div className="container">
           <InboxPane humans={this.state.humans} />
-          {this.props.children || "Select a Conversation from the Inbox"}
+          {this.props.children || <div id="conversation-pane" className="column"><h4>Select a Conversation from the Inbox</h4></div>}
           <StorePane stores={this.state.stores} />
         </div>
       </div>

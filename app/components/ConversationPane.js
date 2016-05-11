@@ -8,7 +8,9 @@ class ConversationPane extends React.Component {
     super(props);
     autoBind(this);
   }
-  
+  sortByDateDesc(a, b) {
+    return a.time < b.time ? -1 : a.time > b.time ? 1 : 0;
+  }
   loadSampleData(human) {
     this.setState({conversation: samples.humans[human].conversations});
   }
@@ -29,7 +31,7 @@ class ConversationPane extends React.Component {
         <h1>Conversation</h1>
         <h3>{this.props.params.human}</h3>
         <div id="messages">
-         {this.state.conversation.map(this.renderMessage)}
+         {this.state.conversation.sort(this.sortByDateDesc).map(this.renderMessage)}
         </div>
       </div>
     )

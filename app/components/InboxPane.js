@@ -16,18 +16,7 @@ class InboxPane extends React.Component {
     return (
       <div id="inbox-pane" className="column">
         <h1>Inbox</h1>
-        <table>
-          <thead>
-            <tr>
-              <th>Chat Received</th>
-              <th>Name</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Object.keys(this.props.humans).map(this.renderConvoSum)}
-          </tbody>
-        </table>
+          {Object.keys(this.props.humans).map(this.renderConvoSum)}
       </div>
     )
   }
