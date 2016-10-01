@@ -1,6 +1,6 @@
 {
   "name": "pizza-bot-manager",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Sample app for the React Microsoft Virtual Academy course.",
   "main": "./PizzaBot/server.js",
   "private": true,
