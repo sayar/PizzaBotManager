@@ -72,6 +72,8 @@ dialog.on('OrderPizza', [
         next();
     },
     function (session, results, next) {
+
+        
         var name = session.dialogData.human_name;
         if(!(name in humans)){
             humans[name] = {
@@ -99,22 +101,9 @@ dialog.on('OrderPizza', [
 ]);
 
 var express = require('express');
-var path = require('path');
 var app = express();
-
-app.get('/api/humans', function (req, res) {
-   return res.json(humans);
-});
-
-app.get('/api/clear', function(req, res) {
-    humans = {};
-    res.sendStatus(200);
-});
 
 // Handle Bot Framework messages
 app.post('/api/messages', bot.verifyBotFramework(), bot.listen());
-
-app.use('/chat', express.static(path.join(__dirname, '')));
-app.use('/', express.static(path.join(__dirname, '../dist')));
 
 app.listen(process.env.PORT || 8080);
