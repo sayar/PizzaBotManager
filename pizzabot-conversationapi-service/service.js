@@ -1,4 +1,6 @@
 var builder = require('botbuilder');
+var MongoClient = require('mongodb').MongoClient;
+var MongoURL = process.env.MONGODB_URL | 'mongodb://localhost:27017/pizzabot';
 
 var model = 'https://api.projectoxford.ai/luis/v1/application?id=' + process.env.LUIS_ID + '&subscription-key=' + process.env.LUIS_KEY
 var dialog = new builder.LuisDialog(model);
@@ -72,27 +74,40 @@ dialog.on('OrderPizza', [
         next();
     },
     function (session, results, next) {
+        // Use connect method to connect to the server
+        MongoClient.connect(MongoURL, function(err, db) {
+            assert.equal(null, err);
+            console.log("Connected successfully to server");
 
-        
-        var name = session.dialogData.human_name;
-        if(!(name in humans)){
-            humans[name] = {
-                'conversations': [],
-                'orders': []
-            }
-        }
-        humans[name].conversations.push.apply(humans[name].conversations, session.dialogData.conversations)
-        humans[name].orders.push({
-            'time': new Date(),
-            'status': 'confirmed',
-            'address': session.dialogData.address,
-            'price': 15,
-            'pizzas': [{
-                'size': session.dialogData.size, 
-                'toppings': session.dialogData.toppings
-            }]
-                
+            var collection = db.collection('humans');
+            var name = session.dialogData.human_name;
+
+            // Note: obviously using a person's name as an ID is a bad idea but this is a sample app and we can permit it.
+            collection.findOne({'name': name}, function(err, doc){
+                if(doc == null) {
+                    doc = {
+                        'name': name,
+                        'conversations': [],
+                        'orders': []
+                    }
+                }
+                doc.conversations.push.apply(humans[name].conversations, session.dialogData.conversations)
+                doc.orders.push({
+                    'time': new Date(),
+                    'status': 'confirmed',
+                    'address': session.dialogData.address,
+                    'price': 15,
+                    'pizzas': [{
+                        'size': session.dialogData.size, 
+                        'toppings': session.dialogData.toppings
+                    }]     
+                });
+
+                collection.updateOne({'name': name}, doc);
+                db.close();
+            })
         });
+
         next();
     },    
     function(session, results){
