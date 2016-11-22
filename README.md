@@ -10,7 +10,9 @@ Sample app for the [React MVA](https://mva.microsoft.com/en-US/training-courses/
 
 Make sure you have the Webpack dev server installed: 
 
-> npm install -g webpack webpack-dev-server
+```
+npm install -g webpack webpack-dev-server
+```
 
 ## To Add Visual Studio Code Intellisense
 
