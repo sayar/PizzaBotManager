@@ -1,16 +1,18 @@
 # PizzaBotManager
-Sample app for the React MVA
+Sample app for the [React MVA](https://mva.microsoft.com/en-US/training-courses/react-the-definitive-beginners-guide-16547)
 
 ## Dependencies:
-* React
-* Babel
-* Webpack
+* [React](https://facebook.github.io/react/)
+* [Babel](https://babeljs.io/)
+* [Webpack](https://webpack.github.io/)
 
 ## How to Run Debug Server
 
 Make sure you have the Webpack dev server installed: 
 
-> npm install -g webpack webpack-dev-server
+```
+npm install -g webpack webpack-dev-server
+```
 
 ## To Add Visual Studio Code Intellisense
 
