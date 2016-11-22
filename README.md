@@ -2,9 +2,9 @@
 Sample app for the [React MVA](https://mva.microsoft.com/en-US/training-courses/react-the-definitive-beginners-guide-16547)
 
 ## Dependencies:
-* React
-* Babel
-* Webpack
+* [React](https://facebook.github.io/react/)
+* [Babel](https://babeljs.io/)
+* [Webpack](https://webpack.github.io/)
 
 ## How to Run Debug Server
 
