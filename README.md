@@ -1,5 +1,5 @@
 # PizzaBotManager
-Sample app for the React MVA
+Sample app for the [React MVA](https://mva.microsoft.com/en-US/training-courses/react-the-definitive-beginners-guide-16547)
 
 ## Dependencies:
 * React
